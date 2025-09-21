@@ -1,2 +1,2 @@
-# Automation-QA-Courses
-# Welcome to my repository
+Automation-QA-Courses
+Welcome to my repository
