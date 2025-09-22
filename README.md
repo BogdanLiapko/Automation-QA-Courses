@@ -1,1 +1,1 @@
-Welcome to my repository Viacheslav Levkoniuk (@vlevkoniuk) and Nataliia Zamishchak (@nzamishchak)
+Welcome to my repository Viacheslav Levkoniuk and Nataliia Zamishchak
