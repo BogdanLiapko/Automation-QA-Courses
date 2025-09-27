@@ -1,0 +1,22 @@
+const a = 5;
+const b = '5';
+
+console.log(a == b);
+console.log(a === b);
+console.log(a != b);
+console.log(a !== b);
+console.log(a > b);
+console.log(a < b);
+console.log(a > b || a === b);
+console.log(a < b || a === b);
+console.log(a >= b);
+console.log(a <= b);
+console.log(a || b);
+console.log(a && b);
+console.log(!a);
+console.log(!b);
+console.log(!!a);
+console.log(!!b);
+console.log(a ?? b);
+console.log(a ?? null);
+console.log(b ?? null);

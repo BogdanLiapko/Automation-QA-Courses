@@ -1,1 +1,0 @@
-Welcome to my repository Viacheslav Levkoniuk and Nataliia Zamishchak
