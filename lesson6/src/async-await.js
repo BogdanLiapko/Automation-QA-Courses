@@ -6,7 +6,8 @@ async function useJson(json) {
 
 async function fetchJsonWithAsync(url) {
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+    if (!response.ok)
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
     const json = await response.json();
     const processed = await useJson(json);
     return processed;

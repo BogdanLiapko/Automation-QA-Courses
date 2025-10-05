@@ -1,13 +1,15 @@
 async function fetchWithFallback(primaryUrl, fallbackUrl) {
     try {
         const response = await fetch(primaryUrl);
-        if (!response.ok) throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+        if (!response.ok)
+            throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
         return await response.json();
     } catch (primaryError) {
         console.log(`Primary fetch failed: ${primaryError.message}. Trying fallback URL...`);
         try {
             const response = await fetch(fallbackUrl);
-            if (!response.ok) throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            if (!response.ok)
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
             return await response.json();
         } catch (fallbackError) {
             throw new Error(`Both primary and fallback fetches failed. Fallback error: ${fallbackError.message}`);
