@@ -1,13 +1,16 @@
 function func (arr: number[] | string[]): number {
-    let sum = 0;
+    const validNumbers: number[] = [];
     for (const item of arr) {
-        sum += Number(item);
+        const num = Number(item);
+        if (!isNaN(num)) {
+            validNumbers.push(num);
+        }
     }
-    return sum;
+    return validNumbers.reduce((acc, curr) => acc + curr, 0);
 }
 
 const arrNum1: number[] = [10, 20, 30, 40, 50];
-const arrStr1: string[] = ['10', '20', '30'];
+const arrStr1: string[] = ['10', '20', '30', 'abc', '40xyz'];
 
 console.log('Number Array Sum:', func(arrNum1));
 console.log('String Array Sum:', func(arrStr1));
