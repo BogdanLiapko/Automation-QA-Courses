@@ -1,7 +1,7 @@
-Welcome to my repository Viacheslav Levkoniuk and Nataliia Zamishchak
+# Welcome to my repository Viacheslav Levkoniuk and Nataliia Zamishchak
 Lesson2
     README.md
-JavaScript projects
+# JavaScript projects
 lesson3
     (lesson3/src/arifmetics.js)
     (lesson3/src/decision-tree.js)
@@ -19,3 +19,7 @@ lesson6
      (lesson6/src/async-await.js)
      (lesson6/src/promises.js)
      (lesson6/src/try-catch.js)
+# TypeScript projects
+lesson7-TS
+     (lesson7-TS/src/functions.ts)
+     (lesson7-TS/src/arrow-functions.ts)
