@@ -1,6 +1,10 @@
 import { Car } from './car';
+import { IChargeable } from './interfaces/interface';
 
-export class ElectricCar extends Car {
+export class ElectricCar extends Car implements IChargeable {
+    public charge(): void {
+        console.log(`${this.brand} ${this.model}: charging the battery...`);
+    }
     private batteryLevel = 100;
 
     public move(): void {
