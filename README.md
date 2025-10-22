@@ -8,5 +8,6 @@ lesson6
 # TypeScript projects
 lesson7-TS
 lesson8-TS
-(lesson9-TS)
-(lesson10-TS-TF)
+lesson9-TS
+lesson10-TS-TF
+lesson11-TS-Mock
