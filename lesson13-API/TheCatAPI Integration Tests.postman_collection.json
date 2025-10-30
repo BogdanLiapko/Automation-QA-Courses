@@ -1,0 +1,292 @@
+{
+	"info": {
+		"_postman_id": "c6ce5352-d5e9-4996-a1fb-58a9678cc3f4",
+		"name": "TheCatAPI Integration Tests",
+		"description": "Integration tests for TheCatAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18088113"
+	},
+	"item": [
+		{
+			"name": "1. Get Random Image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+							"let jsonData = pm.response.json();",
+							"pm.test('Response has image id', () => pm.expect(jsonData[0]).to.have.property('id'));",
+							"pm.environment.set('image_id', jsonData[0].id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/images/search",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"images",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Add to Favourites",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200 or 201', () => pm.expect([200,201]).to.include(pm.response.code));",
+							"let res = pm.response.json();",
+							"pm.test('Message is SUCCESS', () => pm.expect(res.message).to.eql('SUCCESS'));",
+							"pm.environment.set('favourite_id', res.id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"image_id\": \"{{image_id}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/favourites",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"favourites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Vote for Image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+							"let res = pm.response.json();",
+							"pm.test('Vote created successfully', () => pm.expect(res.message).to.eql('SUCCESS'));",
+							"pm.environment.set('vote_id', res.id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"image_id\": \"{{image_id}}\", \"value\": 1}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/votes",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"votes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Get Votes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+							"let votes = pm.response.json();",
+							"pm.test('Contains vote for image_id', () => {",
+							"  const found = votes.some(v => v.image_id === pm.environment.get('image_id'));",
+							"  pm.expect(found).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/votes",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"votes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Get Favourites",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+							"let favs = pm.response.json();",
+							"pm.test('Contains our favourite', () => {",
+							"  const found = favs.some(f => f.id == pm.environment.get('favourite_id'));",
+							"  pm.expect(found).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/favourites",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"favourites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Delete Favourite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => pm.response.to.have.status(200));",
+							"let res = pm.response.json();",
+							"pm.test('Message is SUCCESS', () => pm.expect(res.message).to.eql('SUCCESS'));"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/favourites/{{favourite_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"favourites",
+						"{{favourite_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		}
+	]
+}
