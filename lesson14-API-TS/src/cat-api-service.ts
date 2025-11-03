@@ -2,40 +2,42 @@ import {ApiResponse} from './interfaces/interfaces';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const BASE_URL = process.env.BASE_URL || 'https://api.thecatapi.com/v1';
-const API_KEY = process.env.API_KEY || 'live_b4PbuvritoHZvZmEORiREgqGVJDzqRR9XfUEt9mVWdVLPG6Vu4kUatP9UikISbUq';
-class CatApiService {
-    public static async get<T>(path: string): Promise<ApiResponse<T>> {
-        const res = await fetch(BASE_URL + path, {
-            method: 'GET',
-            headers: { 'x-api-key': API_KEY }
-        });
-        return CatApiService.handleResponse<T>(res);
+export class CatApiService {
+    private baseUrl: string;
+    private apiKey: string;
+
+    public constructor (baseUrl?: string, apiKey?: string) {
+        this.baseUrl = baseUrl || process.env.BASE_URL || 'https://api.thecatapi.com/v1';
+        this.apiKey = apiKey || process.env.API_KEY || 'live_b4PbuvritoHZvZmEORiREgqGVJDzqRR9XfUEt9mVWdVLPG6Vu4kUatP9UikISbUq';
     }
 
-    public static async post<T>(path: string, body: object): Promise<ApiResponse<T>> {
-        const res = await fetch(BASE_URL + path, {
+    public async get<T>(path: string): Promise<ApiResponse<T>> {
+        const res = await fetch(this.baseUrl + path, {
+            method: 'GET',
+            headers: { 'x-api-key': this.apiKey }
+        });
+        return this.handleResponse<T>(res);
+    }
+
+    public async post<T>(path: string, body: object): Promise<ApiResponse<T>> {
+        const res = await fetch(this.baseUrl + path, {
             method: 'POST',
-            headers: {'x-api-key': API_KEY,
-                'Content-Type': 'application/json'
-            },
+            headers: {'x-api-key': this.apiKey, 'Content-Type': 'application/json'},
             body: JSON.stringify(body)
         });
-        return CatApiService.handleResponse<T>(res);
+        return this.handleResponse<T>(res);
     }
 
-    public static async delete<T>(path: string): Promise<ApiResponse<T>> {
-        const res = await fetch(BASE_URL + path, {
+    public async delete<T>(path: string): Promise<ApiResponse<T>> {
+        const res = await fetch(this.baseUrl + path, {
             method: 'DELETE',
-            headers: { 'x-api-key': API_KEY }
+            headers: { 'x-api-key': this.apiKey }
         });
-        return CatApiService.handleResponse<T>(res);
+        return this.handleResponse<T>(res);
     }
 
-    private static async handleResponse<T>(res: Response): Promise<ApiResponse<T>> {
+    private async handleResponse<T>(res: Response): Promise<ApiResponse<T>> {
         const data = await res.json().catch(() => ({} as T));
         return { status: res.status, data };
     }
 }
-
-export default CatApiService;
