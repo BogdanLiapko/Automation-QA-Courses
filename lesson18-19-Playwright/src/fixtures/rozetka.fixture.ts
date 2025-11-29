@@ -23,7 +23,7 @@ export const test = base.extend<RozetkaFixture>({
         await use(new CartModal(page));
     },
     productTile: async ({ page }, use) => {
-        const root = page.locator('.goods-tile');
+        const root = page.locator('rz-product-tile article');
         await use(new ProductTile(page, root));
     }
 });
