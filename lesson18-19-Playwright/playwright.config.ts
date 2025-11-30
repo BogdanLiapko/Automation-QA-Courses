@@ -40,8 +40,8 @@ export default defineConfig({
                 ...devices['Desktop Chrome'],
                 headless: false,
                 viewport: {
-                    width: 1680,
-                    height: 900
+                    width: 1400,
+                    height: 1080
                 }
                 // storageState: '.auth/storage-state-0.json'
             }
