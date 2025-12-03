@@ -2,3 +2,13 @@ node_modules/
 .vscode/
 .idea/
 build/
+reports/
+**/reports/
+test-results/
+videos/
+playwright-report/
+blob-report/
+**/reports/*.json
+**/reports/*.xml
+**/reports/*.html
+.DS_Store
