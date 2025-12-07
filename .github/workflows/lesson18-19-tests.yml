@@ -42,10 +42,12 @@ jobs:
       - uses: daun/playwright-report-summary@v3
         if: always()
         with:
-          report-file: ${{ env.BUILD_FOLDER }}/test-results/test-results.json
+          report-file: ${{ env.BUILD_FOLDER }}/test-results
           report-tag: 'Test Results Summary'
           job-summary: true
-          comment-on-pr: true
+          create-comment: true
+          comment-title: 'Playwright test results'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
     
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
