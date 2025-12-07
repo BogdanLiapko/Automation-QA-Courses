@@ -40,20 +40,16 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: daun/playwright-report-summary@v3
-        if: ${{ always() }}
+        if: always()
         with:
-          report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
+          report-file: ${{ env.BUILD_FOLDER }}/test-results/test-results.json
           report-tag: 'Test Results Summary'
           job-summary: true
-          create-comment: true
-          comment-title: Playwright test results
-          icon-style: octicons
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload test-results artifact
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+          comment-on-pr: true
+    
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: test-results
+          name: upload test-results
           path: ${{ env.BUILD_FOLDER }}/test-results
           retention-days: 30
