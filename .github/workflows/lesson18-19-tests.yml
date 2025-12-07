@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
@@ -28,16 +29,23 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=json:./test-results/.last-run.json --reporter=line
+        run: npx playwright test --reporter=json=./test-results/.last-run.json --reporter=line
         working-directory: ${{ env.BUILD_FOLDER }}
-        continue-on-error: true
         env:
           CI: true
+        continue-on-error: true
 
-      - name: List test-results folder
+      - name: Verify JSON report
         run: |
           echo "Listing test-results folder:"
           ls -la ./test-results || echo "Folder not found"
+
+          echo "Checking JSON report validity:"
+          cat ./test-results/.last-run.json
+          if ! jq empty ./test-results/.last-run.json; then
+            echo "ERROR: JSON report is invalid or empty"
+            exit 1
+          fi
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: daun/playwright-report-summary@v3
