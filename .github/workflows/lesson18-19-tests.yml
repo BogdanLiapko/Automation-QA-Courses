@@ -24,7 +24,7 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Run tests
