@@ -31,6 +31,8 @@ jobs:
         run: npx playwright test --reporter=json=./test-results/test-results.json --reporter=line
         working-directory: ${{ env.BUILD_FOLDER }}
         continue-on-error: true
+        env:
+          CI: true
 
       - name: List test-results folder
         run: |
