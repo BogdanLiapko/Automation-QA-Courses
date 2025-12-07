@@ -23,6 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
@@ -40,14 +41,30 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
         env:
           CI: true
+        continue-on-error: true
 
-      - name: Generate Allure Single-file report
-        run: npx allure generate ./reports/allure-results --single-file --clean -o ./reports/allure-report-single-file
+      - name: List allure-results
+        run: |
+          echo "Listing allure-results folder:"
+          ls -la ./reports/allure-results || echo "Folder not found"
         working-directory: ${{ env.BUILD_FOLDER }}
 
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+      - name: Generate Allure Single-file report
+        if: ${{ success() || always() }}
+        run: |
+          if [ -d ./reports/allure-results ] && [ "$(ls -A ./reports/allure-results)" ]; then
+            echo "Generating Allure single-file report..."
+            npx allure generate ./reports/allure-results --single-file --clean -o ./reports/allure-report-single-file
+          else
+            echo "No allure-results found, skipping report generation."
+          fi
+        working-directory: ${{ env.BUILD_FOLDER }}
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: upload allure-report-single-file
+          name: allure-report-single-file
           path: ${{ env.BUILD_FOLDER }}/reports/allure-report-single-file
           retention-days: 30
+

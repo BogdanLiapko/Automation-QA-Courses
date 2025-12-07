@@ -28,20 +28,21 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Run tests
-        run: npx playwright test --reporter=json,line
+        run: npx playwright test --reporter=json:./test-results/.last-run.json,line
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: daun/playwright-report-summary@v3
         if: always()
         with:
-         report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
-         report-tag: 'Test Results Summary'
-         job-summary: true
-         comment-on-pr: true
+          report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
+          report-tag: 'Test Results Summary'
+          job-summary: true
+          create-comment: true
+          comment-title: 'Playwright test results'
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-         name: upload test-results
-         path: ${{ env.BUILD_FOLDER }}/test-results
-         retention-days: 30
+          name: upload test-results
+          path: ${{ env.BUILD_FOLDER }}/test-results
+          retention-days: 30
