@@ -31,17 +31,23 @@ jobs:
         run: npm ci
         working-directory: ${{ env.BUILD_FOLDER }}
 
+      - name: Install Playwright Browsers
+        run: npx playwright install
+        working-directory: ${{ env.BUILD_FOLDER }}
+
       - name: Run Cucumber tests
         run: npm test
         working-directory: ${{ env.BUILD_FOLDER }}
+        env:
+          CI: true
 
       - name: Generate Allure Single-file report
-        run: npx allure generate allure-results --single-file --clean -o allure-report-single-file
+        run: npx allure generate ./reports/allure-results --single-file --clean -o ./reports/allure-report-single-file
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: upload allure-report-single-file
-          path: ${{ env.BUILD_FOLDER }}/allure-report-single-file
+          path: ${{ env.BUILD_FOLDER }}/reports/allure-report-single-file
           retention-days: 30

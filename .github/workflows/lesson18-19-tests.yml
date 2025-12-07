@@ -34,7 +34,7 @@ jobs:
       - uses: daun/playwright-report-summary@v3
         if: always()
         with:
-         report-file: ${{ env.BUILD_FOLDER }}/test-results/test-results.json
+         report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
          report-tag: 'Test Results Summary'
          job-summary: true
          comment-on-pr: true
