@@ -17,3 +17,7 @@ lesson13-API
 lesson14-API-TS
 # UI Projects
 lesson15-Selectors
+# Playwright project
+lesson18-19-Playwright
+# Cucumber project with Allure report
+lesson20,21-cucumber.js+Allure
