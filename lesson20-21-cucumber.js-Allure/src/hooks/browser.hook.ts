@@ -4,7 +4,7 @@ import { RobotDreamsWorld } from '../worlds/robot-dreams.world.ts';
 
 export function browserHook():void {
     BeforeAll(async function() {
-        RobotDreamsWorld.browser = await chromium.launch({ headless: true });
+        RobotDreamsWorld.browser = await chromium.launch({ headless: false });
     });
 
 

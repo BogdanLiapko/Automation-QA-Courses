@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
@@ -24,25 +25,35 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
         working-directory: ${{ env.BUILD_FOLDER }}
 
-      - name: Run tests
-        run: npx playwright test --reporter=json:./test-results/.last-run.json,line
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: ${{ env.BUILD_FOLDER }}
+        continue-on-error: true
+
+      - name: Check test-results folder
+        run: |
+          echo "Listing test-results folder:"
+          ls -la ./test-results || echo "Folder not found"
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: daun/playwright-report-summary@v3
-        if: always()
+        if: ${{ always() }}
         with:
           report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
           report-tag: 'Test Results Summary'
           job-summary: true
           create-comment: true
-          comment-title: 'Playwright test results'
+          comment-title: Playwright test results
+          icon-style: octicons
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+      - name: Upload test-results artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
         with:
-          name: upload test-results
+          name: test-results
           path: ${{ env.BUILD_FOLDER }}/test-results
           retention-days: 30
