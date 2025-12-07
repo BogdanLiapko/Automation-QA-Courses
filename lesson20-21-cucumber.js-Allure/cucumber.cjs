@@ -1,5 +1,5 @@
 const common = {
-    loader: ['ts-node/esm'],
+    loader: ['ts-node-maintained/esm'],
     format: [
         '@cucumber/pretty-formatter',
     ],
@@ -17,7 +17,7 @@ const ci = {
         'json:./reports/cucumber.json',
         'html:./reports/cucumber-embedded.html',
         'junit:./reports/cucumber.xml',
-        'allure-cucumberjs/reporter'
+        'allure-cucumberjs/reporter:allure'
     ],
     formatOptions: {
         ...common.formatOptions,

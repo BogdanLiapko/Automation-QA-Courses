@@ -7,7 +7,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js --config cucumber.cjs --profile local"
+    "test": "cucumber-js --config cucumber.cjs --profile local",
+    "allure:report": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^12.3.0",
