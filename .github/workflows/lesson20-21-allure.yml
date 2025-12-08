@@ -67,4 +67,3 @@ jobs:
           name: allure-report-single-file
           path: ${{ env.BUILD_FOLDER }}/reports/allure-report-single-file
           retention-days: 30
-
