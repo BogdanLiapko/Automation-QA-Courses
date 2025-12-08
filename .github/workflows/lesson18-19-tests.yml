@@ -15,7 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
@@ -29,37 +28,32 @@ jobs:
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=json=./test-results/.last-run.json --reporter=line
+        run: npx playwright test
         working-directory: ${{ env.BUILD_FOLDER }}
         env:
           CI: true
         continue-on-error: true
 
-      - name: Verify JSON report
+      - name: Verify JSON report exists
         run: |
-          echo "Listing test-results folder:"
-          ls -la ./test-results || echo "Folder not found"
-
-          echo "Checking JSON report validity:"
-          cat ./test-results/.last-run.json
-          if ! jq empty ./test-results/.last-run.json; then
-            echo "ERROR: JSON report is invalid or empty"
-            exit 1
-          fi
+          ls -la test-results
+          cat test-results/results.json
         working-directory: ${{ env.BUILD_FOLDER }}
 
       - uses: daun/playwright-report-summary@v3
         if: always()
         with:
-          report-file: ${{ env.BUILD_FOLDER }}/test-results/.last-run.json
+          report-file: ${{ env.BUILD_FOLDER }}/test-results/results.json
           report-tag: 'Test Results Summary'
           job-summary: true
           create-comment: false
           icon-style: octicons
 
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: always()
         with:
-          name: upload test-results
-          path: ${{ env.BUILD_FOLDER }}/test-results
-          retention-days: 30
+          name: playwright-test-results
+          path: |
+            ${{ env.BUILD_FOLDER }}/test-results
+            ${{ env.BUILD_FOLDER }}/playwright-report
+          retention-days: 14
