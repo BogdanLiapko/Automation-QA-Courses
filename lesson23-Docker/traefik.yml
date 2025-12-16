@@ -1,0 +1,17 @@
+entryPoints:
+  web:
+    address: ":8082"        # фронтенд RP
+  traefik:
+    address: ":8081"        # dashboard Traefik
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    filename: "/etc/traefik/dynamic.yml"
+
+api:
+  dashboard: true
+  insecure: true
+
