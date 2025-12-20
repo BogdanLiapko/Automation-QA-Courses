@@ -1,0 +1,15 @@
+http:
+  routers:
+    rp-ui:
+      rule: "Host(`localhost`)"
+      service: rp-ui
+      entryPoints:
+        - web
+      priority: 1
+
+  services:
+    rp-ui:
+      loadBalancer:
+        servers:
+          - url: "http://reportportal-ui-1:8082"
+
